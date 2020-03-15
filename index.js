@@ -6,7 +6,6 @@ const app = express();
 
 const oliviatthew = new Intelligo.SlackBot(config.oliviatthew);
 
-
 //Subscribe to messages sent by the user with the bot.on() method.
 oliviatthew.on('message', event => {
   if(event.type != 'message' || event.username == "oliviatthew") return
