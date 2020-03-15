@@ -4,10 +4,7 @@ const config = require('config');
 
 const app = express();
 
-const oliviatthew = new Intelligo.SlackBot({
-  token: "xoxb-990027139079-1003470779798-VEB97bUYbsY3ey8CXCk7SMeY",
-  name: "oliviatthew"
-});
+const oliviatthew = new Intelligo.SlackBot(config.oliviatthew);
 
 
 //Subscribe to messages sent by the user with the bot.on() method.
