@@ -1,24 +1,62 @@
 const express = require('express');
-const Intelligo = require('intelligo');
-const config = require('config');
+const SlackBot = require('slackbots');
+const load = require('./loader.js');
+const config = require('./config.js');
+const RNNTest = require('./brain.js').RNNTest;
 
 const app = express();
 
-const oliviatthew = new Intelligo.SlackBot(config.oliviatthew);
+const oliviatthew = new SlackBot(config.oliviatthew);
 
-//Subscribe to messages sent by the user with the bot.on() method.
-oliviatthew.on('message', event => {
-  if(event.type != 'message' || event.username == "oliviatthew") return
+const brainPath = 'data/oliviatthew'
+let	oliviatthewBrain
 
-  console.log(event)
-	oliviatthew.postMessage(
-		event.channel,
-		`:zap: hello world`
-	);
-});
+load()
+  .then(createBrain)
+  //.then(trainBrain)
+  .then(loadBrain)
+  .then(saveBrain)
+  .then(startBot)
+  .then(startServer)
 
-app.set('port', process.env.PORT || 5000);
 
-app.listen(app.get('port'), function() {
-  console.log('Server is running on port', app.get('port'));
-});
+function createBrain(material) {
+	oliviatthewBrain = new RNNTest(
+		material.list,
+		material.charList,
+		material.longest
+	)
+}
+
+function trainBrain() {
+	oliviatthewBrain.generate()
+	return oliviatthewBrain.train(1, 128)
+}
+
+function saveBrain() {
+	return oliviatthewBrain.save(brainPath)
+}
+
+function loadBrain() {
+	return oliviatthewBrain.load(brainPath)
+}
+
+function startBot() {
+	oliviatthew.on('message', event => {
+		if(event.type != 'message' || event.username == "oliviatthew") return
+
+		console.log(event)
+		oliviatthew.postMessage(
+			event.channel,
+			oliviatthewBrain.answer(event.text)
+		);
+	});
+}
+
+function startServer() {
+	app.set('port', process.env.PORT || 5000);
+
+	app.listen(app.get('port'), function() {
+		console.log('Server is running on port', app.get('port'));
+	});
+}

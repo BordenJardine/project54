@@ -3,10 +3,14 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "load": "node loader.js"
     },
     "dependencies": {
+        "@tensorflow/tfjs-node": "^1.7.0",
+        "@tensorflow/tfjs-node-gpu": "^1.7.0",
+        "csv-reader": "^1.0.6",
         "express": "^4.17.1",
-        "intelligo": "1.0.14"
+        "slackbots": "^1.2.0"
     }
 }

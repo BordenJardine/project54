@@ -20,3 +20,10 @@ m-477/o-54 bot
 finalizing
 ===========
 - hosting
+
+throw out intelligo
+===================
+
+- tensor flow
+- some sort of slack chatbot lib
+- sequence to sequence RNN
