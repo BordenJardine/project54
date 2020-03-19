@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node index.js",
+        "start": "node server.js",
         "load": "node loader.js"
     },
     "dependencies": {
@@ -11,6 +11,7 @@
         "@tensorflow/tfjs-node-gpu": "^1.7.0",
         "csv-reader": "^1.0.6",
         "express": "^4.17.1",
+        "markov": "0.0.7",
         "slackbots": "^1.2.0"
     }
 }

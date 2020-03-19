@@ -95,19 +95,17 @@ function convertDataToTensors(data, charTable, maxLen) {
 
 function createAndCompileModel(layers, hiddenSize, maxLen, vocabularySize) {
   const model = tf.sequential();
-  console.log('maxlen!', maxLen)
-  model.add(tf.layers.simpleRNN({
+  model.add(tf.layers.lstm({
     units: hiddenSize,
     recurrentInitializer: 'glorotNormal',
     inputShape: [maxLen, vocabularySize]
   }));
   model.add(tf.layers.repeatVector({n: maxLen}));
-	model.add(tf.layers.simpleRNN({
+	model.add(tf.layers.lstm({
 		units: hiddenSize,
 		recurrentInitializer: 'glorotNormal',
 		returnSequences: true
 	}));
-   
   model.add(tf.layers.timeDistributed({
     layer: tf.layers.dense({units: vocabularySize})
 	}));
@@ -131,9 +129,12 @@ class RNNTest {
 
   generate(layers=LAYERS, hiddenSize=128) {
     // Prepare training data.
-    const split = Math.floor(this.data.length * 0.9);
-    this.trainData = this.data.slice(0, split);
-    this.testData = this.data.slice(split);
+    //const split = Math.floor(this.data.length * 0.9);
+    //this.trainData = this.data.slice(0, split);
+    //this.testData = this.data.slice(split);
+    const split = Math.floor(this.data.length * 0.1);
+    this.testData = this.data.slice(0, split);
+    this.trainData = this.data.slice(split);
     [this.trainXs, this.trainYs] =
         convertDataToTensors(this.trainData, this.charTable, this.maxLen);
     [this.testXs, this.testYs] =

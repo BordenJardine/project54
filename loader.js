@@ -1,19 +1,19 @@
 const Fs = require('fs');
 const CsvReadableStream = require('csv-reader');
-const MAX_LEN = 100
 let prev = ''
 let list = []
 let chars = new Set()
 let longest = 0
 let longestM = ''
 let skipped = 0
+let max = 100
 
 function readRow(row) {
 	const who = row[3]
 	const message = clean(row[4])
 	if(typeof message != 'string') return
 
-  if (message.length > MAX_LEN) {
+  if (message.length > max) {
     skipped++
     return
   }
@@ -38,16 +38,17 @@ function clean(message) {
   .replace(/\[.*\)/g, '')
 }
 
-module.exports = function load() {
+module.exports = function load(maxLen) {
 	let inputStream = Fs.createReadStream('data/livvy_chat.txt', 'utf8');
+	prev = ''
+	list = []
+	chars = new Set()
+	longest = 0
+	longestM = ''
+	skipped = 0
+	max = maxLen
 	 
 	return new Promise((resolve, reject) => {
-		prev = ''
-		list = []
-		chars = new Set()
-		longest = 0
-		longestM = ''
-    skipped = 0
 
 		inputStream
 			.pipe(new CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true }))
