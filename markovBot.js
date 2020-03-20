@@ -5,7 +5,8 @@ module.exports = function createBot(text) {
   const bot = markov(ORDER)
   const respondTo = (line) => {
     const response = bot.respond(line).join(' ')
-    return response.substring(0, response.indexOf('.') + 1, 2)
+    console.log('response length', response.length)
+    return response.substring(0, response.indexOf('.', 2) + 1)
   }
   const t = Date.now()
   return new Promise((resolve, reject) => {

@@ -1,35 +1,30 @@
 const express = require('express')
-const SlackBot = require('slackbots')
 const load = require('./markovLoader.js')
 const config = require('./config.js')
 const createMarkovBot = require('./markovBot.js')
+const createSlackBot = require('./slackBot.js')
 
-const MAX_MESSAGE_LENGTH = 300;
-const brainPath = 'data/oliviatthew'
-
-const app = express()
-const oliviatthewBot = new SlackBot(config.oliviatthew)
-
-load(MAX_MESSAGE_LENGTH)
-  .then(createBot)
-  .then(startBot)
-  .then(startServer)
-
-function createBot(lists) {
-	return createMarkovBot(lists['Olivia Ruiz-Knott'].join('\n'))
+const MAX_MESSAGE_LENGTH = 100
+const SLACK_USERS = {
+  m_477: "Matt Jardine",
+  o_54: "Olivia Ruiz-Knott",
+  oliviatthew: "both",
 }
 
-function startBot(responder) {
-	oliviatthewBot.on('message', event => {
-		if(event.type != 'message' ||
-       event.username == "oliviatthew" || event.hidden) return
+const app = express()
 
-		console.log(event)
-		oliviatthewBot.postMessage(
-			event.channel,
-			responder(event.text)
-		);
-	});
+load(MAX_MESSAGE_LENGTH)
+  .then(createMarkovBots)
+  .then(startServer)
+
+async function createMarkovBots(lists) {
+  for(username in SLACK_USERS) {
+    console.log('creating', username)
+    let realName = SLACK_USERS[username]
+    let responseGenerator = await createMarkovBot(lists[realName].join('\n'))
+    let slackName = username.replace('_', '-')
+    createSlackBot(config[username], slackName, responseGenerator)
+  }
 }
 
 function startServer() {
@@ -37,5 +32,5 @@ function startServer() {
 
 	app.listen(app.get('port'), () => {
 		console.log('Server is running on port', app.get('port'))
-	});
+	})
 }
