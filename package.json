@@ -12,6 +12,7 @@
         "csv-reader": "^1.0.6",
         "express": "^4.17.1",
         "markov": "0.0.7",
+        "markov-generator": "^1.2.2",
         "slackbots": "^1.2.0"
     }
 }

@@ -7,10 +7,6 @@ function clean(message) {
     .replace(/`.*`/g, '')
     .replace(/\[.*\)/g, '')
 
-  // i'm using periods to limit the length, so make sure they are there.
-  if (!['?','.','!'].includes(message.charAt(message.length-1))) {
-    message = message.concat('.')
-  }
   return message
 }
 

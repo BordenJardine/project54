@@ -1,10 +1,10 @@
 const express = require('express')
 const load = require('./markovLoader.js')
 const config = require('./config.js')
-const createMarkovBot = require('./markovBot.js')
+const createMarkovBot = require('./markovBot2.js')
 const createSlackBot = require('./slackBot.js')
 
-const MAX_MESSAGE_LENGTH = 100
+const MAX_MESSAGE_LENGTH = 300
 const SLACK_USERS = {
   m_477: "Matt Jardine",
   o_54: "Olivia Ruiz-Knott",
@@ -21,7 +21,7 @@ async function createMarkovBots(lists) {
   for(username in SLACK_USERS) {
     console.log('creating', username)
     let realName = SLACK_USERS[username]
-    let responseGenerator = await createMarkovBot(lists[realName].join('\n'))
+    let responseGenerator = createMarkovBot(lists[realName])
     let slackName = username.replace('_', '-')
     createSlackBot(config[username], slackName, responseGenerator)
   }
