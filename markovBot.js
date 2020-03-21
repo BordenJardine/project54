@@ -2,11 +2,9 @@ const Markov = require('markov-generator')
 const MIN = 1
 
 module.exports = function createBot(text) {
-  const bot = new Markov({
-    input: text,
-    minLength: Math.floor(Math.random() * 30) + MIN
-  })
+  const bot = new Markov({ input: text })
   return respondTo = (line) => {
-    return bot.makeChain()
+    const min = Math.floor(Math.random() * 30) + MIN
+    return bot.makeChain(min)
   }
 }

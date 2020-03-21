@@ -3,7 +3,7 @@ const SIMULATOR_CHANNEL = 'C010F3MPB2Q'
 
 module.exports = function createSlackBot(config, username, responseGenerator) {
   const bot = new SlackBot(config)
-  let lastSender = ''
+  let lastSender = null
 	bot.on('message', event => {
 
     if(event.type == 'error' && event.error.msg == 'Socket URL has expired') {
@@ -11,26 +11,29 @@ module.exports = function createSlackBot(config, username, responseGenerator) {
       return createSlackBot(config, username, responseGenerator)
     }
 
-    if (event.channel == SIMULATOR_CHANNEL) {
-      lastSender = event.username
-      // don't double post
-      if(username == lastSender) return
-      // conversations need to end some time
-      if(Math.random() > 0.9) return
-    }
-    if(event.type != 'message') return
+    if(event.type != 'message' || event.hidden) return
 
-		if(
-      // don't talk to yourself
-      event.username == username ||
-      event.hidden
-    ) return
+    if(event.channel == SIMULATOR_CHANNEL) {
+      // don't double post
+      if(username == lastSender) {
+         lastSender = null
+         return
+      }
+      lastSender = event.username
+
+      // conversations need to end some time
+      if(Math.random() > 0.5) return
+    }
+
+    // don't talk to yourself
+		if(event.username == username) return
 
 		console.log(event)
 
 		bot.postMessage(
 			event.channel,
-			responseGenerator(event.text)
+			responseGenerator(event.text),
+      {as_user: true}
 		)
 	})
 }
