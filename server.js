@@ -1,7 +1,7 @@
 const express = require('express')
 const load = require('./markovLoader.js')
 const config = require('./config.js')
-const createMarkovBot = require('./markovBot2.js')
+const createMarkovBot = require('./markovBot.js')
 const createSlackBot = require('./slackBot.js')
 
 const MAX_MESSAGE_LENGTH = 300
