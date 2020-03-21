@@ -1,32 +1,32 @@
 const SlackBot = require('slackbots')
 const SIMULATOR_CHANNEL = 'C010F3MPB2Q'
 
-module.exports = function createSlackBot(config, username, responseGenerator) {
+module.exports = function createSlackBot(config, user, responseGenerator) {
   const bot = new SlackBot(config)
   let lastSender = null
 	bot.on('message', event => {
 
     if(event.type == 'error' && event.error.msg == 'Socket URL has expired') {
       console.log('lost connection :( restarting!')
-      return createSlackBot(config, username, responseGenerator)
+      return createSlackBot(config, user, responseGenerator)
     }
 
     if(event.type != 'message' || event.hidden) return
 
     if(event.channel == SIMULATOR_CHANNEL) {
       // don't double post
-      if(username == lastSender) {
+      if(user == lastSender) {
          lastSender = null
          return
       }
-      lastSender = event.username
+      lastSender = event.user
 
       // conversations need to end some time
       if(Math.random() > 0.5) return
     }
 
     // don't talk to yourself
-		if(event.username == username) return
+		if(event.user == user) return
 
 		console.log(event)
 

@@ -1,17 +1,7 @@
-const Fs = require('fs');
-const CsvReadableStream = require('csv-reader');
+const readChatCSV = require('./csvReader.js')
+const filePath = 'data/livvy_chat.txt'
 
-function clean(message) {
-	if (typeof message != 'string') return null
-	message = message
-    .replace(/`.*`/g, '')
-    .replace(/\[.*\)/g, '')
-
-  return message
-}
-
-module.exports = function load(maxLen) {
-	const inputStream = Fs.createReadStream('data/livvy_chat.txt', 'utf8')
+module.exports = async function load(maxLen) {
   const lists = {
     'Olivia Ruiz-Knott': [],
     'Matt Jardine': [],
@@ -20,31 +10,24 @@ module.exports = function load(maxLen) {
 	let skipped = 0
 
   function log() {
-    for (name in lists) console.log(name, lists[name].length)
+    for (let name in lists) console.log(name, lists[name].length)
     console.log('Skipped:', skipped)
   }
 
   function readRow(row) {
-    const who = row[3]
-    const message = clean(row[4])
+    const {who, message} = row
     if (!message || message.length > maxLen) {
       skipped++
       return
     }
-    for (name in lists) {
+    for (let name in lists) {
       if (name == who || name == 'both') {
         lists[name].push(message)
       }
     }
   }
 
-	return new Promise((resolve, reject) => {
-		inputStream
-			.pipe(new CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true }))
-			.on('data', readRow)
-			.on('end', data => {
-          log()
-					resolve(lists)
-			})
-	})
+  await readChatCSV(filePath, readRow)
+  log()
+  return lists
 }

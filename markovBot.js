@@ -1,3 +1,6 @@
+const Fs = require('fs');
+const CsvReadableStream = require('csv-reader');
+
 const Markov = require('markov-generator')
 const MIN = 1
 
