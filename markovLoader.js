@@ -1,7 +1,6 @@
 const readChatCSV = require('./csvReader.js')
-const filePath = 'data/livvy_chat.txt'
 
-module.exports = async function load(maxLen) {
+module.exports = async function load(filePath, maxLen) {
   const lists = {
     'Olivia Ruiz-Knott': [],
     'Matt Jardine': [],

@@ -12,6 +12,8 @@ module.exports = function createSlackBot(config, user, responseGenerator) {
     }
 
     if(event.type != 'message' || event.hidden) return
+    // don't talk to yourself
+		if(event.user == user) return
 
     if(event.channel == SIMULATOR_CHANNEL) {
       // don't double post
@@ -22,11 +24,8 @@ module.exports = function createSlackBot(config, user, responseGenerator) {
       lastSender = event.user
 
       // conversations need to end some time
-      if(Math.random() > 0.5) return
+      if(Math.random() > 0.8) return
     }
-
-    // don't talk to yourself
-		if(event.user == user) return
 
 		console.log(event)
 

@@ -1,17 +1,44 @@
 {
-    "name": "project54",
-    "version": "0.0.0",
-    "private": true,
-    "scripts": {
-        "start": "node server.js",
-        "load": "node loader.js"
-    },
-    "dependencies": {
-        "@tensorflow/tfjs-node": "^1.7.0",
-        "@tensorflow/tfjs-node-gpu": "^1.7.0",
-        "csv-reader": "^1.0.6",
-        "express": "^4.17.1",
-        "markov-generator": "^1.2.2",
-        "slackbots": "^1.2.0"
-    }
+	"name": "project54",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "node server.js",
+		"react": "react-scripts start",
+		"build": "react-scripts build"
+	},
+	"dependencies": {
+		"babel-cli": "^6.26.0",
+		"babel-preset-react-app": "^3.1.2",
+		"csv-reader": "^1.0.6",
+		"express": "^4.17.1",
+		"markov-generator": "^1.2.2",
+		"npm-watch": "^0.6.0",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-emoji-render": "^1.2.2",
+		"react-scripts": "3.4.1",
+		"slackbots": "^1.2.0"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+		"not dead",
+		"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+		"last 1 firefox version",
+		"last 1 safari version"
+		]
+	},
+	"watch": {
+		"build": {
+			"patterns": [
+				"src"
+			],
+			"extensions": "js,jsx"
+		}
+	},
+	"proxy": "http://localhost:5000"	
 }
