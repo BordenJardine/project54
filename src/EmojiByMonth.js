@@ -1,5 +1,8 @@
 import React from 'react'
 import Emoji, { toArray } from "react-emoji-render"
+import livvyIcon from "./livvy_icon.png"
+import mattIcon from "./matt_icon.jpg"
+import nfLogo from "./nflogo.jpg"
 
 const livvy = "Olivia Ruiz-Knott"
 const matt = "Matt Jardine"
@@ -17,14 +20,18 @@ export default function EmojiByMonth(props) {
     <div className="monthsContainer">
       <Header />
       {months()}
+      <Footer />
     </div>
   )
 }
 
 function Header(props) {
   return(
-    <div></div>
-
+    <div className="header">
+      <img src={livvyIcon} className="rounded" />
+      <img src={nfLogo} />
+      <img src={mattIcon} className="rounded" />
+    </div>
   )
 }
 
@@ -71,6 +78,14 @@ function EmojiList(props) {
       <div className={className}>
       { list.map(renderEmoji)}
       </div>
+    </div>
+  )
+}
+
+function Footer() {
+  return (
+    <div className="footer">
+      <Emoji text=":wave:" />
     </div>
   )
 }
